@@ -2,7 +2,9 @@
 #![no_main]
 #![no_std]
 
+use core::f32::consts::PI;
 use cortex_m_rt::entry;
+use libm::atan2f;
 use lsm303agr::{AccelMode, AccelOutputDataRate, Lsm303agr, MagMode, MagOutputDataRate};
 use microbit::display::blocking::Display;
 use microbit::hal::twim::Frequency;
@@ -62,11 +64,26 @@ fn main() -> ! {
             &calibration,
         );
 
-        let direction = match (calibrated_mag_data.x > 0, calibrated_mag_data.y > 0) {
-            (true, true) => Direction::NorthEast,
-            (true, false) => Direction::SouthEast,
-            (false, true) => Direction::NorthWest,
-            (false, false) => Direction::SouthWest,
+        let radians = atan2f(calibrated_mag_data.y as f32, calibrated_mag_data.x as f32);
+
+        let degrees = radians * 180.0 / PI;
+
+        let direction = if degrees > 120.0 && degrees <= 150.0 {
+            Direction::NorthWest
+        } else if degrees > 60.0 && degrees <= 120.0 {
+            Direction::North
+        } else if degrees > 30.0 && degrees <= 60.0 {
+            Direction::NorthEast
+        } else if degrees > -30.0 && degrees <= 30.0 {
+            Direction::East
+        } else if degrees > -60.0 && degrees <= -30.0 {
+            Direction::SouthEast
+        } else if degrees > -120.0 && degrees <= -60.0 {
+            Direction::South
+        } else if degrees > -150.0 && degrees <= -120.0 {
+            Direction::SouthWest
+        } else {
+            Direction::West
         };
 
         let led_matrix = direction_led::get_led_matrix(direction);
