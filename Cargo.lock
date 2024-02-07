@@ -30,6 +30,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "46afbd2983a5d5a7bd740ccb198caf5b82f45c40c09c0eed36052d91cb92e719"
 
 [[package]]
+name = "bitflags"
+version = "2.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed570934406eb16438a4e976b1b4500774099c13b8cb96eec99f620f05090ddf"
+
+[[package]]
 name = "bytemuck"
 version = "1.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -149,6 +155,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "libm"
+version = "0.2.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ec2a862134d2a7d32d7983ddcdd1c4923530833c9f2ea1a44fc5fa473989058"
+
+[[package]]
+name = "lsm303agr"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "82d672443f0535384ea86fff40c50156c5fae3fe0446242edeb9ff993b63e0dc"
+dependencies = [
+ "bitflags",
+ "embedded-hal",
+ "nb 1.1.0",
+]
+
+[[package]]
 name = "microbit-common"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -165,6 +188,9 @@ version = "0.1.0"
 dependencies = [
  "cortex-m",
  "cortex-m-rt",
+ "embedded-hal",
+ "libm",
+ "lsm303agr",
  "microbit-v2",
  "panic-rtt-target",
  "rtt-target",
